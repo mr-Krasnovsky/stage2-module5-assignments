@@ -16,18 +16,18 @@ import lombok.Setter;
 @Setter
 public class LocalProcessor {
     private String processorName;
-    private Long period = 10_000_000_000_000L;
+    private long period = 10_000_000_000_000L;
     protected String processorVersion;
-    private int valueofCheap;
+    private int valueOfCheap;
     Scanner informationScanner;
     static List<String> stringArrayList;
 
-    public LocalProcessor(String processorName, Long period, String processorVersion, int valueOfCheap,
+    public LocalProcessor(String processorName, long period, String processorVersion, int valueOfCheap,
                           Scanner informationScanner, List<String> stringArrayList) {
         this.processorName = processorName;
         this.period = period;
         this.processorVersion = processorVersion;
-        this.valueofCheap = valueOfCheap;
+        this.valueOfCheap = valueOfCheap;
         this.informationScanner = informationScanner;
         this.stringArrayList = stringArrayList;
     }
@@ -39,7 +39,9 @@ public class LocalProcessor {
     public void listIterator(List<String> stringList) {
         stringArrayList = new LinkedList<>(stringList);
         for (String str: stringArrayList) {
-            System.out.println(str.hashCode());
+            if (str != null) {
+                System.out.println(str.hashCode());
+            }
         }
     }
 
@@ -47,7 +49,7 @@ public class LocalProcessor {
     public String fullNameProcessorGenerator(List<String> stringList) {
         StringBuilder processorNameBuilder = new StringBuilder();
         for (String str: stringList) {
-            processorNameBuilder.append(str + " ");
+                processorNameBuilder.append(str + " ");
         }
         processorName = processorNameBuilder.toString();
         return processorName;
