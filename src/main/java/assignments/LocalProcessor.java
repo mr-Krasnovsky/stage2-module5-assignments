@@ -5,6 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.lang.StringBuilder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import assignments.annotations.FullNameProcessorGeneratorAnnotation;
 import assignments.annotations.ListIteratorAnnotation;
@@ -15,6 +19,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LocalProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(LocalProcessor.class);
+
     private String processorName;
     private long period = 10_000_000_000_000L;
     protected String processorVersion;
@@ -40,7 +46,7 @@ public class LocalProcessor {
         stringArrayList = new LinkedList<>(stringList);
         for (String str: stringArrayList) {
             if (str != null) {
-                System.out.println(str.hashCode());
+                logger.info(String.valueOf(str.hashCode()));
             }
         }
     }
@@ -57,7 +63,8 @@ public class LocalProcessor {
 
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) {
-           try (Scanner informationScanner = new Scanner(file)){
+           try {
+               informationScanner = new Scanner(file);
                StringBuilder versionBuilder = new StringBuilder();
                while (informationScanner.hasNext()) {
                    versionBuilder.append(informationScanner.nextLine());
@@ -65,7 +72,11 @@ public class LocalProcessor {
                processorVersion = versionBuilder.toString();
         } catch (FileNotFoundException e){
                e.printStackTrace();
-        }
+        } finally {
+               if (informationScanner != null){
+                   informationScanner.close();
+               }
+           }
     }
 }
 
