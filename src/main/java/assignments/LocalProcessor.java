@@ -49,7 +49,8 @@ public class LocalProcessor {
         for (String str: stringArrayList) {
             if (str != null) {
                 stringBuilder.append(str.hashCode());
-                logger.info(stringBuilder.toString());
+                String logMessage = stringBuilder.toString();
+                logger.info(logMessage);
             }
         }
     }
@@ -66,16 +67,20 @@ public class LocalProcessor {
 
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) {
-           try (Scanner infoScanner = new Scanner(file);){
+           try {
+               informationScanner = new Scanner(file);
                stringBuilder = new StringBuilder();
-               while (infoScanner.hasNext()) {
-                   stringBuilder.append(infoScanner.nextLine());
+               while (informationScanner.hasNext()) {
+                   stringBuilder.append(informationScanner.nextLine());
             }
                processorVersion = stringBuilder.toString();
         } catch (FileNotFoundException e){
-               logger.error("File not found: {}", file.getPath());
                e.printStackTrace();
-        }
+        } finally {
+               if (informationScanner != null){
+                   informationScanner.close();
+               }
+           }
     }
 }
 
